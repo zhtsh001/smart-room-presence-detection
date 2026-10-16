@@ -25,7 +25,7 @@ The model expects a 24×32 thermal frame, normalized with training mean 27.05980
 
 ## Data provenance
 
-The original working directory used the public [FIR Image Action Localisation Dataset](https://github.com/visiongo-kr/FIR-Image-Action-Localisation-Dataset), whose README also points to the [earlier FIR Image Action Dataset](https://github.com/visiongo-kr/FIR-Image-Action-Dataset). The raw data is deliberately not mirrored here. Consult the original authors for dataset access, terms and citation requirements. No additional license is asserted over third-party data or dependencies.
+The original working directory used the public [FIR Image Action Localisation Dataset](https://github.com/ThomasDubail/FIR-Image-Action-Localisation-Dataset), whose README also points to the [earlier FIR Image Action Dataset](https://github.com/visiongo-kr/FIR-Image-Action-Dataset). The raw data is deliberately not mirrored here. Consult the original authors for dataset access, terms and citation requirements. No additional license is asserted over third-party data or dependencies.
 
 ## Verification
 
