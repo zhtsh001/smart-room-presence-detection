@@ -1,0 +1,12 @@
+.DS_Store
+arduino_secrets.h
+.env
+.env.*
+dataset/
+RGB_hand_labeled/
+FIR-Image-Action-Localisation-Dataset-main/
+*.pdf
+*.docx
+*.pptx
+build/
+__pycache__/

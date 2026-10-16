@@ -1,0 +1,872 @@
+{
+  "status": "complete",
+  "generated_at": "2026-06-21T01:08:04-05:00",
+  "reason_for_regeneration": "Retrained source CNN, applied physical structured channel pruning, fine-tuned pruned candidates, then regenerated representative full-int8 TFLite for Arduino UNO R4 WiFi.",
+  "sensor_confirmation": {
+    "sensor_model": "MLX90640",
+    "dataset_frame_source": "FIR dataset IR .npy files named mlx90640, shape 24x32",
+    "arduino_library": "Adafruit_MLX90640",
+    "arduino_read_call": "mlx->getFrame(frame)"
+  },
+  "model": {
+    "architecture": "Conv2D(2)-MaxPool-Conv2D(4)-MaxPool-Conv2D(4)-GlobalAveragePooling-Dense(1)",
+    "task": "binary presence / occupancy detection",
+    "input_layout": "NHWC",
+    "input_frame_shape": [
+      24,
+      32
+    ],
+    "train_mean": 27.0598087310791,
+    "train_std": 1.093957543373108,
+    "decision_threshold_probability": 0.5419303774833679,
+    "size_bytes": 4272,
+    "size_kb": 4.17,
+    "parameter_count": 249,
+    "required_tflite_micro_ops": [
+      "CONV_2D",
+      "DELEGATE",
+      "FULLY_CONNECTED",
+      "MAX_POOL_2D",
+      "MEAN"
+    ],
+    "op_sequence": [
+      "CONV_2D",
+      "MAX_POOL_2D",
+      "CONV_2D",
+      "MAX_POOL_2D",
+      "CONV_2D",
+      "MEAN",
+      "FULLY_CONNECTED",
+      "DELEGATE"
+    ],
+    "recommended_tensor_arena_bytes": 8192
+  },
+  "structured_pruning": {
+    "method": "L1-norm channel pruning on Conv2D output filters, with dependent input-channel slicing in later Conv2D layers and Dense input slicing after GAP.",
+    "source_architecture": "Conv2D(8)-MaxPool-Conv2D(16)-MaxPool-Conv2D(16)-GlobalAveragePooling-Dense(1)",
+    "selected_candidate": [
+      2,
+      4,
+      4
+    ],
+    "candidate_results": [
+      {
+        "filters": [
+          2,
+          4,
+          4
+        ],
+        "parameter_count": 249,
+        "tflite_size_bytes": 4272,
+        "tflite_path": "<build-workspace>/candidate_2_4_4/presence_model_int8.tflite",
+        "pruning": {
+          "source_filters": [
+            8,
+            16,
+            16
+          ],
+          "target_filters": [
+            2,
+            4,
+            4
+          ],
+          "kept_channels": {
+            "conv1": [
+              0,
+              6
+            ],
+            "conv2": [
+              10,
+              11,
+              12,
+              14
+            ],
+            "conv3": [
+              7,
+              8,
+              9,
+              11
+            ]
+          },
+          "removed_channels": {
+            "conv1": 6,
+            "conv2": 12,
+            "conv3": 12
+          }
+        },
+        "float_threshold": 0.541762596766154,
+        "int8_threshold": 0.5419303774833679,
+        "float_val": {
+          "accuracy": 0.9600106638229805,
+          "precision": 0.9756239964968618,
+          "recall": 0.9804899515916092,
+          "f1": 0.9780509218612818,
+          "auc": 0.9593354526950122,
+          "cm": [
+            [
+              518,
+              167
+            ],
+            [
+              133,
+              6684
+            ]
+          ],
+          "score_min": 0.44838035106658936,
+          "score_max": 0.9865319132804871,
+          "score_mean": 0.7491834163665771
+        },
+        "float_test": {
+          "accuracy": 0.9546787523327113,
+          "precision": 0.9711916193801833,
+          "recall": 0.9791697227519437,
+          "f1": 0.9751643535427319,
+          "auc": 0.9495587994376447,
+          "cm": [
+            [
+              487,
+              198
+            ],
+            [
+              142,
+              6675
+            ]
+          ],
+          "score_min": 0.44838035106658936,
+          "score_max": 0.9871619343757629,
+          "score_mean": 0.7491427659988403
+        },
+        "int8_val": {
+          "accuracy": 0.959744068248467,
+          "precision": 0.9746466559813493,
+          "recall": 0.98122341205809,
+          "f1": 0.9779239766081871,
+          "auc": 0.9592860913409906,
+          "cm": [
+            [
+              511,
+              174
+            ],
+            [
+              128,
+              6689
+            ]
+          ],
+          "score_min": 0.44973546266555786,
+          "score_max": 0.9834588766098022,
+          "score_mean": 0.7489280700683594
+        },
+        "int8_test": {
+          "accuracy": 0.9548120501199681,
+          "precision": 0.9709217795870893,
+          "recall": 0.9796097990318322,
+          "f1": 0.9752464403066813,
+          "auc": 0.949384053819937,
+          "cm": [
+            [
+              485,
+              200
+            ],
+            [
+              139,
+              6678
+            ]
+          ],
+          "score_min": 0.44973546266555786,
+          "score_max": 0.9834588766098022,
+          "score_mean": 0.7489038109779358
+        },
+        "int8_tensors": {
+          "input": {
+            "name": "serving_default_input:0",
+            "shape": [
+              1,
+              24,
+              32,
+              1
+            ],
+            "dtype": "numpy.int8",
+            "quantization": {
+              "scale": 0.04344721883535385,
+              "zero_point": -35
+            }
+          },
+          "output": {
+            "name": "StatefulPartitionedCall_1:0",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "numpy.int8",
+            "quantization": {
+              "scale": 0.016811635345220566,
+              "zero_point": -116
+            }
+          },
+          "ops": [
+            "CONV_2D",
+            "MAX_POOL_2D",
+            "CONV_2D",
+            "MAX_POOL_2D",
+            "CONV_2D",
+            "MEAN",
+            "FULLY_CONNECTED",
+            "DELEGATE"
+          ]
+        },
+        "quantization_error": {
+          "mean_abs_logit_error": 0.00805654376745224,
+          "max_abs_logit_error": 0.2571887969970703
+        },
+        "training_history": {
+          "binary_accuracy": [
+            0.9268738627433777,
+            0.9335294961929321,
+            0.9350433945655823,
+            0.9404135942459106,
+            0.9463836550712585
+          ],
+          "loss": [
+            0.6638091802597046,
+            0.6071081161499023,
+            0.5805715322494507,
+            0.5537034869194031,
+            0.5295065641403198
+          ],
+          "val_binary_accuracy": [
+            0.9360170364379883,
+            0.936950147151947,
+            0.9405491948127747,
+            0.9454811811447144,
+            0.9526792764663696
+          ],
+          "val_loss": [
+            0.4872862696647644,
+            0.4392469823360443,
+            0.3893050253391266,
+            0.34134814143180847,
+            0.3122823238372803
+          ],
+          "learning_rate": [
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257
+          ]
+        }
+      },
+      {
+        "filters": [
+          3,
+          6,
+          6
+        ],
+        "parameter_count": 535,
+        "tflite_size_bytes": 4696,
+        "tflite_path": "<build-workspace>/candidate_3_6_6/presence_model_int8.tflite",
+        "pruning": {
+          "source_filters": [
+            8,
+            16,
+            16
+          ],
+          "target_filters": [
+            3,
+            6,
+            6
+          ],
+          "kept_channels": {
+            "conv1": [
+              0,
+              2,
+              6
+            ],
+            "conv2": [
+              1,
+              2,
+              6,
+              11,
+              12,
+              14
+            ],
+            "conv3": [
+              2,
+              5,
+              7,
+              9,
+              10,
+              11
+            ]
+          },
+          "removed_channels": {
+            "conv1": 5,
+            "conv2": 10,
+            "conv3": 10
+          }
+        },
+        "float_threshold": 0.5230810392399629,
+        "int8_threshold": 0.5254173135757448,
+        "float_val": {
+          "accuracy": 0.9590775793121834,
+          "precision": 0.9737991266375546,
+          "recall": 0.9813701041513863,
+          "f1": 0.9775699568934025,
+          "auc": 0.9661130557033779,
+          "cm": [
+            [
+              505,
+              180
+            ],
+            [
+              127,
+              6690
+            ]
+          ],
+          "score_min": 0.448270708322525,
+          "score_max": 0.9970180988311768,
+          "score_mean": 0.7933353185653687
+        },
+        "float_test": {
+          "accuracy": 0.9544121567581978,
+          "precision": 0.9692709088273663,
+          "recall": 0.9809300278714977,
+          "f1": 0.9750656167979003,
+          "auc": 0.95475512592499,
+          "cm": [
+            [
+              473,
+              212
+            ],
+            [
+              130,
+              6687
+            ]
+          ],
+          "score_min": 0.448270708322525,
+          "score_max": 0.9967508316040039,
+          "score_mean": 0.7932955026626587
+        },
+        "int8_val": {
+          "accuracy": 0.9590775793121834,
+          "precision": 0.9742132867132867,
+          "recall": 0.9809300278714977,
+          "f1": 0.9775601198742782,
+          "auc": 0.9659999850095671,
+          "cm": [
+            [
+              508,
+              177
+            ],
+            [
+              130,
+              6687
+            ]
+          ],
+          "score_min": 0.4502286911010742,
+          "score_max": 0.99576336145401,
+          "score_mean": 0.793752908706665
+        },
+        "int8_test": {
+          "accuracy": 0.9538789656091708,
+          "precision": 0.9692530819434373,
+          "recall": 0.980343259498313,
+          "f1": 0.9747666277712952,
+          "auc": 0.9547509500186846,
+          "cm": [
+            [
+              473,
+              212
+            ],
+            [
+              134,
+              6683
+            ]
+          ],
+          "score_min": 0.4502286911010742,
+          "score_max": 0.99576336145401,
+          "score_mean": 0.7936827540397644
+        },
+        "int8_tensors": {
+          "input": {
+            "name": "serving_default_input:0",
+            "shape": [
+              1,
+              24,
+              32,
+              1
+            ],
+            "dtype": "numpy.int8",
+            "quantization": {
+              "scale": 0.04344721883535385,
+              "zero_point": -35
+            }
+          },
+          "output": {
+            "name": "StatefulPartitionedCall_1:0",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "numpy.int8",
+            "quantization": {
+              "scale": 0.022194085642695427,
+              "zero_point": -119
+            }
+          },
+          "ops": [
+            "CONV_2D",
+            "MAX_POOL_2D",
+            "CONV_2D",
+            "MAX_POOL_2D",
+            "CONV_2D",
+            "MEAN",
+            "FULLY_CONNECTED",
+            "DELEGATE"
+          ]
+        },
+        "quantization_error": {
+          "mean_abs_logit_error": 0.009034876711666584,
+          "max_abs_logit_error": 0.2663431167602539
+        },
+        "training_history": {
+          "binary_accuracy": [
+            0.9201325178146362,
+            0.9283878207206726,
+            0.9371857643127441,
+            0.9470121264457703,
+            0.9526394009590149
+          ],
+          "loss": [
+            0.6281470656394958,
+            0.5566255450248718,
+            0.5338411927223206,
+            0.5136222839355469,
+            0.4965452551841736
+          ],
+          "val_binary_accuracy": [
+            0.9289522767066956,
+            0.9345507621765137,
+            0.9449480175971985,
+            0.9526792764663696,
+            0.9538789391517639
+          ],
+          "val_loss": [
+            0.3585033714771271,
+            0.3161426782608032,
+            0.30253806710243225,
+            0.28859415650367737,
+            0.2559679448604584
+          ],
+          "learning_rate": [
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257
+          ]
+        }
+      },
+      {
+        "filters": [
+          4,
+          8,
+          8
+        ],
+        "parameter_count": 929,
+        "tflite_size_bytes": 5224,
+        "tflite_path": "<build-workspace>/candidate_4_8_8/presence_model_int8.tflite",
+        "pruning": {
+          "source_filters": [
+            8,
+            16,
+            16
+          ],
+          "target_filters": [
+            4,
+            8,
+            8
+          ],
+          "kept_channels": {
+            "conv1": [
+              0,
+              2,
+              3,
+              6
+            ],
+            "conv2": [
+              1,
+              2,
+              4,
+              8,
+              10,
+              11,
+              12,
+              14
+            ],
+            "conv3": [
+              2,
+              5,
+              7,
+              8,
+              9,
+              10,
+              11,
+              15
+            ]
+          },
+          "removed_channels": {
+            "conv1": 4,
+            "conv2": 8,
+            "conv3": 8
+          }
+        },
+        "float_threshold": 0.5006457295020421,
+        "int8_threshold": 0.5054088830947876,
+        "float_val": {
+          "accuracy": 0.962276726206345,
+          "precision": 0.9717008374241987,
+          "recall": 0.9872377878832331,
+          "f1": 0.9794076984646729,
+          "auc": 0.9699012451696006,
+          "cm": [
+            [
+              489,
+              196
+            ],
+            [
+              87,
+              6730
+            ]
+          ],
+          "score_min": 0.4504017233848572,
+          "score_max": 0.997005045413971,
+          "score_mean": 0.7880778908729553
+        },
+        "float_test": {
+          "accuracy": 0.9577446014396161,
+          "precision": 0.9674913693901036,
+          "recall": 0.9866510195100484,
+          "f1": 0.9769772677754376,
+          "auc": 0.9587362636774316,
+          "cm": [
+            [
+              459,
+              226
+            ],
+            [
+              91,
+              6726
+            ]
+          ],
+          "score_min": 0.4504017233848572,
+          "score_max": 0.9970026612281799,
+          "score_mean": 0.7872265577316284
+        },
+        "int8_val": {
+          "accuracy": 0.9616102372700613,
+          "precision": 0.9718167365226189,
+          "recall": 0.9863576353234561,
+          "f1": 0.9790331974373908,
+          "auc": 0.9697761821294766,
+          "cm": [
+            [
+              490,
+              195
+            ],
+            [
+              93,
+              6724
+            ]
+          ],
+          "score_min": 0.45147162675857544,
+          "score_max": 0.9951432943344116,
+          "score_mean": 0.7884390950202942
+        },
+        "int8_test": {
+          "accuracy": 0.9576113036523594,
+          "precision": 0.9681602074629015,
+          "recall": 0.9857708669502714,
+          "f1": 0.9768861753161797,
+          "auc": 0.9586423593228179,
+          "cm": [
+            [
+              464,
+              221
+            ],
+            [
+              97,
+              6720
+            ]
+          ],
+          "score_min": 0.45147162675857544,
+          "score_max": 0.9951432943344116,
+          "score_mean": 0.7875504493713379
+        },
+        "int8_tensors": {
+          "input": {
+            "name": "serving_default_input:0",
+            "shape": [
+              1,
+              24,
+              32,
+              1
+            ],
+            "dtype": "numpy.int8",
+            "quantization": {
+              "scale": 0.04344721883535385,
+              "zero_point": -35
+            }
+          },
+          "output": {
+            "name": "StatefulPartitionedCall_1:0",
+            "shape": [
+              1,
+              1
+            ],
+            "dtype": "numpy.int8",
+            "quantization": {
+              "scale": 0.021636279299855232,
+              "zero_point": -119
+            }
+          },
+          "ops": [
+            "CONV_2D",
+            "MAX_POOL_2D",
+            "CONV_2D",
+            "MAX_POOL_2D",
+            "CONV_2D",
+            "MEAN",
+            "FULLY_CONNECTED",
+            "DELEGATE"
+          ]
+        },
+        "quantization_error": {
+          "mean_abs_logit_error": 0.011307590641081333,
+          "max_abs_logit_error": 0.48448801040649414
+        },
+        "training_history": {
+          "binary_accuracy": [
+            0.9157049655914307,
+            0.928244948387146,
+            0.9396138191223145,
+            0.9509255290031433,
+            0.9545817971229553
+          ],
+          "loss": [
+            0.6834163069725037,
+            0.5406002998352051,
+            0.5213202238082886,
+            0.503391683101654,
+            0.4883335828781128
+          ],
+          "val_binary_accuracy": [
+            0.9254865646362305,
+            0.9361503720283508,
+            0.9473474025726318,
+            0.9569448232650757,
+            0.9618768095970154
+          ],
+          "val_loss": [
+            0.3182154595851898,
+            0.29129770398139954,
+            0.2798425853252411,
+            0.26982253789901733,
+            0.2601465582847595
+          ],
+          "learning_rate": [
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257,
+            0.0005000000237487257
+          ]
+        }
+      }
+    ]
+  },
+  "tensors": {
+    "input": {
+      "name": "serving_default_input:0",
+      "shape": [
+        1,
+        24,
+        32,
+        1
+      ],
+      "dtype": "numpy.int8",
+      "quantization": {
+        "scale": 0.04344721883535385,
+        "zero_point": -35
+      }
+    },
+    "output": {
+      "name": "StatefulPartitionedCall_1:0",
+      "shape": [
+        1,
+        1
+      ],
+      "dtype": "numpy.int8",
+      "quantization": {
+        "scale": 0.016811635345220566,
+        "zero_point": -116
+      }
+    }
+  },
+  "dataset": {
+    "dataset_dir": "<project-root>/FIR-Image-Action-Localisation-Dataset-main/dataset",
+    "total_records_found": 50012,
+    "frames_loaded": 50012,
+    "bad_shape_frames": 0,
+    "skipped": 0,
+    "positive_frames": 45445,
+    "negative_frames": 4567,
+    "label_rule": "presence=1 when matching BBOX txt file is non-empty; otherwise presence=0",
+    "sensor_model_confirmed": "MLX90640",
+    "train_frames": 35008,
+    "val_frames": 7502,
+    "test_frames": 7502,
+    "train_positive_frames": 31811,
+    "val_positive_frames": 6817,
+    "test_positive_frames": 6817
+  },
+  "desktop_validation": {
+    "threshold_selected_on_validation": 0.5419303774833679,
+    "float_test": {
+      "accuracy": 0.9546787523327113,
+      "precision": 0.9711916193801833,
+      "recall": 0.9791697227519437,
+      "f1": 0.9751643535427319,
+      "auc": 0.9495587994376447,
+      "cm": [
+        [
+          487,
+          198
+        ],
+        [
+          142,
+          6675
+        ]
+      ],
+      "score_min": 0.44838035106658936,
+      "score_max": 0.9871619343757629,
+      "score_mean": 0.7491427659988403
+    },
+    "int8_test": {
+      "accuracy": 0.9548120501199681,
+      "precision": 0.9709217795870893,
+      "recall": 0.9796097990318322,
+      "f1": 0.9752464403066813,
+      "auc": 0.949384053819937,
+      "cm": [
+        [
+          485,
+          200
+        ],
+        [
+          139,
+          6678
+        ]
+      ],
+      "score_min": 0.44973546266555786,
+      "score_max": 0.9834588766098022,
+      "score_mean": 0.7489038109779358
+    },
+    "mean_abs_logit_error": 0.00805654376745224,
+    "max_abs_logit_error": 0.2571887969970703,
+    "acceptance": {
+      "input_dtype_is_int8": true,
+      "output_dtype_is_int8": true,
+      "meets_min_f1": true,
+      "meets_min_recall": true
+    }
+  },
+  "training": {
+    "source_epochs_ran": 8,
+    "finetune_epochs_ran": 5,
+    "class_weight": {
+      "0": 5.475132937128558,
+      "1": 0.550249913551916
+    },
+    "source_history": {
+      "binary_accuracy": [
+        0.6978119015693665,
+        0.8600605726242065,
+        0.8876256942749023,
+        0.8957952260971069,
+        0.9026222825050354,
+        0.9024794101715088,
+        0.9056501388549805,
+        0.9097920656204224
+      ],
+      "loss": [
+        0.6354687809944153,
+        0.4032224416732788,
+        0.2904359996318817,
+        0.26681017875671387,
+        0.25346839427948,
+        0.2523134648799896,
+        0.24356114864349365,
+        0.2340620458126068
+      ],
+      "val_binary_accuracy": [
+        0.8212476968765259,
+        0.846307635307312,
+        0.8467075228691101,
+        0.8778992295265198,
+        0.8604372143745422,
+        0.9146894216537476,
+        0.9266862273216248,
+        0.9120234847068787
+      ],
+      "val_loss": [
+        0.5465875864028931,
+        0.3621228337287903,
+        0.3565644919872284,
+        0.2922738194465637,
+        0.3373151421546936,
+        0.21781887114048004,
+        0.19034120440483093,
+        0.21799993515014648
+      ],
+      "learning_rate": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    }
+  },
+  "arduino_integration": {
+    "target_board": "Arduino UNO R4 WiFi / arduino:renesas_uno:unor4wifi",
+    "tflite_library_note": "Arduino include/library settings were intentionally left unchanged per request.",
+    "sensor_libraries": [
+      "Adafruit MLX90640",
+      "Adafruit AHTX0",
+      "Adafruit ADXL345",
+      "Adafruit Unified Sensor"
+    ],
+    "main_detection_source": "model_detected when modelReady; threshold_detected fallback if model initialization fails",
+    "updated_constants": {
+      "MODEL_THRESHOLD": 0.5419303774833679,
+      "kTensorArenaSize": 8192
+    }
+  },
+  "paths": {
+    "final_models_dir": "<project-root>/models",
+    "presence_model_int8_tflite": "<project-root>/models/presence_model_int8.tflite",
+    "arduino_sketch": "<project-root>/models/arduino_presence_model/arduino_presence_model.ino",
+    "arduino_header": "<project-root>/models/arduino_presence_model/model_int8.h",
+    "temporary_work_dir": "<build-workspace>"
+  },
+  "arduino_compile_verification": {
+    "status": "failed_due_to_current_tensorflow_lite_library_include",
+    "fqbn": "arduino:renesas_uno:unor4wifi",
+    "error": "Arduino_TensorFlowLite/src/TensorFlowLite.h:22:10: fatal error: peripherals/peripherals.h: No such file or directory",
+    "note": "Model/header generation succeeded. Arduino include/library settings were intentionally left unchanged per user request; this compile failure is from the current Arduino_TensorFlowLite library setup, not from the structured-pruned model bytes."
+  }
+}
